@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelIdentification>
+        <name>Link16</name>
+        <type>FOM</type>
+        <version>0.2</version>
+        <modificationDate>2011-07-27</modificationDate>
+        <securityClassification>Unclassified</securityClassification>
+        <purpose>Link-16 Base Object Model (BOM)</purpose>
+        <applicationDomain>C4ISR &amp; C2 platform</applicationDomain>
+        <description>The Link16 FOM v1.0 Draft 2 has been adapted for the Maritime Theatre Missile Defense (MTMD) SITE simulation environment (called 'SITE Federation'):
+- order: timestamp instead of receive
+- timestamps/lookahead: HLAfloat64Time instead of VerifierIntegerTime 
+- removed basic types: Unsignedinteger64BE, UnsignedInteger16BE, UnsignedInteger32BE
+- added simple types: Integer64, UnsignedInteger32, UnsignedInteger16
+- added fixed record type: RTTABStruct
+- renamed octetArray1, octetArray2 to OctetArray1, OctetArray2
+- OctetArray1, OctetArray2 encodings: HLAfixedArray instead of Undefined
+- renamed TADILJWordStructArray2 to TADILJWordStructArray
+- TADILJWordStructArray encoding: HLAvariableArray instead of Undefined
+- TADILJWordStructArray cardinality: Dynamic instead of [1..2147483647]
+- Link16RadioSignal parameters: HLAbyte instead of HLAoctet, Integer64 instead of LongLong1, UnsignedInteger32 instead of UnsignedLong1, UnsignedInteger16 instead of UnsignedShort1
+- JTIDSTransmitterStruct fields: UnsignedInteger32 instead of UnsignedLong1
+- JTIDSVoiceCVSDRadioSignal, JTIDSVoiceLPC10RadioSignal, JTIDSVoiceLPC12RadioSignal parameters: HLAopaqueData instead of octetArray3
+- removed synchronization points: First, Second
+- removed all notes</description>
+        <useLimitation></useLimitation>
+        <poc>
+            <pocType>Sponsor</pocType>
+            <pocName>Simulation Interoperability Standards Organisation (SISO)</pocName>
+            <pocOrg></pocOrg>
+        </poc>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>Mr Graham C Shanks</pocName>
+            <pocOrg>BAE Systems Integrated System Technologies</pocOrg>
+            <pocTelephone>+44 1383 828062</pocTelephone>
+            <pocEmail>graham.shanks@baesystems.com</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>Roger Jansen</pocName>
+            <pocOrg>TNO</pocOrg>
+            <pocTelephone>+31 88 8661055</pocTelephone>
+            <pocEmail>roger.jansen@tno.nl</pocEmail>
+        </poc>
+        <reference>
+            <type>Converted From</type>
+            <identification>Link16_v1.0-D2_2000.xml</identification>
+        </reference>
+        <other></other>
+    </modelIdentification>
+    <objects>
+        <objectClass>
+            <name>HLAobjectRoot</name>
+        </objectClass>
+    </objects>
+    <interactions>
+        <interactionClass>
+            <name>HLAinteractionRoot</name>
+            <interactionClass>
+                <name>RadioSignal</name>
+                <interactionClass>
+                    <name>RawBinaryRadioSignal</name>
+                    <interactionClass>
+                        <name>TDLBinaryRadioSignal</name>
+                        <sharing>Neither</sharing>
+                        <dimensions/>
+                        <transportation>HLAreliable</transportation>
+                        <order>TimeStamp</order>
+                        <semantics>Parent class for all TDL radio signals</semantics>
+                        <interactionClass>
+                            <name>Link16RadioSignal</name>
+                            <sharing>Subscribe</sharing>
+                            <dimensions/>
+                            <transportation>HLAreliable</transportation>
+                            <order>TimeStamp</order>
+                            <semantics>Link-16 radio signal</semantics>
+                            <parameter>
+                                <name>NPGNumber</name>
+                                <dataType>UnsignedInteger16</dataType>
+                                <semantics>Network/Needline Participation Group (NPG) number. Used to segregate information within a JTIDS/MIDS network. Creates virtual networks of participants.</semantics>
+                            </parameter>
+                            <parameter>
+                                <name>NetNumber</name>
+                                <dataType>HLAbyte</dataType>
+                                <semantics>Network Number. Used to create virtual sub-circuits within NPG for stacked nets or between NPGs for multi-net.</semantics>
+                            </parameter>
+                            <parameter>
+                                <name>PerceivedTransmitTime</name>
+                                <dataType>Integer64</dataType>
+                                <semantics>The time at which the radio signal is transmitted</semantics>
+                            </parameter>
+                            <parameter>
+                                <name>TimeSlotID</name>
+                                <dataType>UnsignedInteger32</dataType>
+                                <semantics>Timeslot identification. Bit encoded field. Bits 0-16 denote the Timeslot number. Timeslot 0 represents timeslot A-1, timeslot 98303 represents C-32767. When the epoch is 112, the last valid timeslot is 45151 (end of the day). Bits 17-23 are padding and shall be set to 0. Bits 24-31 denote the Epoch Number. An epoch is 12.8 minutes long, 112.5 Epochs in a 24 hour day. Part of timeslot identification.</semantics>
+                            </parameter>
+                            <parameter>
+                                <name>TSEC_CVLL</name>
+                                <dataType>HLAbyte</dataType>
+                                <semantics>Transmission Security, an integer identification of the crypto variable used for JTIDS transmission encryption. This variable allows for simulated crypto netting. A value of 255 shall indicate a no statement/wildcard.</semantics>
+                            </parameter>
+                            <parameter>
+                                <name>MSEC_CVLL</name>
+                                <dataType>HLAbyte</dataType>
+                                <semantics>Message Security, an integer identification of the crypto variable used to encode the JTIDS message. This variable allows for simulated crypto netting. A value of 255 shall indicate a no statement/wildcard.</semantics>
+                            </parameter>
+                            <interactionClass>
+                                <name>JTIDSMessageRadioSignal</name>
+                                <sharing>PublishSubscribe</sharing>
+                                <dimensions/>
+                                <transportation>HLAreliable</transportation>
+                                <order>TimeStamp</order>
+                                <semantics>Link-16 radio signal containing a TADIL-J message</semantics>
+                                <parameter>
+                                    <name>JTIDSHeader</name>
+                                    <dataType>JTIDSHeaderStruct</dataType>
+                                    <semantics>Describes data about the JTIDS message</semantics>
+                                </parameter>
+                                <parameter>
+                                    <name>TADILJMessage</name>
+                                    <dataType>TADILJWordStructArray</dataType>
+                                    <semantics>The TADIL-J message</semantics>
+                                </parameter>
+                            </interactionClass>
+                            <interactionClass>
+                                <name>RTTABRadioSignal</name>
+                                <sharing>PublishSubscribe</sharing>
+                                <dimensions/>
+                                <transportation>HLAreliable</transportation>
+                                <order>TimeStamp</order>
+                                <semantics>Link-16 radio signal containing an RTT/A or RTT/B message</semantics>
+                                <parameter>
+                                    <name>RTTAB</name>
+                                    <dataType>RTTABStruct</dataType>
+                                    <semantics>The RTT A/B message</semantics>
+                                </parameter>
+                            </interactionClass>
+                            <interactionClass>
+                                <name>RTTReplyRadioSignal</name>
+                                <sharing>PublishSubscribe</sharing>
+                                <dimensions/>
+                                <transportation>HLAreliable</transportation>
+                                <order>TimeStamp</order>
+                                <semantics>Link-16 radio signal containing an RTT Reply message</semantics>
+                                <parameter>
+                                    <name>RTTReply</name>
+                                    <dataType>RTTReplyStruct</dataType>
+                                    <semantics>*** LINK-16 BOM Interaction Parameter ***</semantics>
+                                </parameter>
+                            </interactionClass>
+                            <interactionClass>
+                                <name>JTIDSVoiceCVSDRadioSignal</name>
+                                <sharing>PublishSubscribe</sharing>
+                                <dimensions/>
+                                <transportation>HLAreliable</transportation>
+                                <order>TimeStamp</order>
+                                <semantics>Link-16 radio signal containing a Voice message encoded using CVSD</semantics>
+                                <parameter>
+                                    <name>JTIDSHeader</name>
+                                    <dataType>JTIDSHeaderStruct</dataType>
+                                    <semantics>JTIDS Header</semantics>
+                                </parameter>
+                                <parameter>
+                                    <name>Data</name>
+                                    <dataType>HLAopaqueData</dataType>
+                                    <semantics>Data</semantics>
+                                </parameter>
+                            </interactionClass>
+                            <interactionClass>
+                                <name>JTIDSVoiceLPC10RadioSignal</name>
+                                <sharing>PublishSubscribe</sharing>
+                                <dimensions/>
+                                <transportation>HLAreliable</transportation>
+                                <order>TimeStamp</order>
+                                <semantics>Link-16 radio signal containing a Voice message encoded using LPC10</semantics>
+                                <parameter>
+                                    <name>JTIDSHeader</name>
+                                    <dataType>JTIDSHeaderStruct</dataType>
+                                    <semantics>JTIDS Header</semantics>
+                                </parameter>
+                                <parameter>
+                                    <name>Data</name>
+                                    <dataType>HLAopaqueData</dataType>
+                                    <semantics>Data</semantics>
+                                </parameter>
+                            </interactionClass>
+                            <interactionClass>
+                                <name>JTIDSVoiceLPC12RadioSignal</name>
+                                <sharing>PublishSubscribe</sharing>
+                                <dimensions/>
+                                <transportation>HLAreliable</transportation>
+                                <order>TimeStamp</order>
+                                <semantics>Link-16 radio signal containing a Voice message encoded using LPC12</semantics>
+                                <parameter>
+                                    <name>JTIDSHeader</name>
+                                    <dataType>JTIDSHeaderStruct</dataType>
+                                    <semantics>JTIDS Header</semantics>
+                                </parameter>
+                                <parameter>
+                                    <name>Data</name>
+                                    <dataType>HLAopaqueData</dataType>
+                                    <semantics>Data</semantics>
+                                </parameter>
+                            </interactionClass>
+                            <interactionClass>
+                                <name>JTIDSLETradioSignal</name>
+                                <sharing>PublishSubscribe</sharing>
+                                <dimensions/>
+                                <transportation>HLAreliable</transportation>
+                                <order>TimeStamp</order>
+                                <semantics>Link-16 radio signal containing a Link-16 Enhanced Throughput (LET) encoded message</semantics>
+                                <parameter>
+                                    <name>TADILJMessage</name>
+                                    <dataType>TADILJWordStructArray</dataType>
+                                    <semantics>Data</semantics>
+                                </parameter>
+                                <parameter>
+                                    <name>LETHeader</name>
+                                    <dataType>LETHeaderStruct</dataType>
+                                    <semantics>LET Header</semantics>
+                                </parameter>
+                            </interactionClass>
+                            <interactionClass>
+                                <name>VMFRadioSignal</name>
+                                <sharing>PublishSubscribe</sharing>
+                                <dimensions/>
+                                <transportation>HLAreliable</transportation>
+                                <order>TimeStamp</order>
+                                <semantics>Link-16 radio signal containing a Variable Message Format (VMF) message</semantics>
+                                <parameter>
+                                    <name>JTIDSHeader</name>
+                                    <dataType>JTIDSHeaderStruct</dataType>
+                                    <semantics>JTIDS Header</semantics>
+                                </parameter>
+                                <parameter>
+                                    <name>TADILJMessage</name>
+                                    <dataType>TADILJWordStructArray</dataType>
+                                    <semantics>Data</semantics>
+                                </parameter>
+                            </interactionClass>
+                        </interactionClass>
+                    </interactionClass>
+                </interactionClass>
+            </interactionClass>
+        </interactionClass>
+    </interactions>
+    <dimensions/>
+    <time>
+        <timeStamp>
+            <dataType>HLAfloat64Time</dataType>
+            <semantics></semantics>
+        </timeStamp>
+        <lookahead>
+            <dataType>HLAfloat64Time</dataType>
+            <semantics></semantics>
+        </lookahead>
+    </time>
+    <tags>
+        <updateReflectTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </updateReflectTag>
+        <sendReceiveTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </sendReceiveTag>
+        <deleteRemoveTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </deleteRemoveTag>
+        <divestitureRequestTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </divestitureRequestTag>
+        <divestitureCompletionTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </divestitureCompletionTag>
+        <acquisitionRequestTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </acquisitionRequestTag>
+        <requestUpdateTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </requestUpdateTag>
+    </tags>
+    <synchronizations/>
+    <transportations/>
+    <dataTypes>
+        <basicDataRepresentations/>
+        <simpleDataTypes>
+            <simpleData>
+                <name>Integer64</name>
+                <representation>HLAinteger64BE</representation>
+                <units>N/A</units>
+                <resolution>N/A</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>-NULL-</semantics>
+            </simpleData>
+            <simpleData>
+                <name>UnsignedInteger32</name>
+                <representation>Unsignedinteger32BE</representation>
+                <units>N/A</units>
+                <resolution>N/A</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>-NULL-</semantics>
+            </simpleData>
+            <simpleData>
+                <name>UnsignedInteger16</name>
+                <representation>Unsignedinteger16BE</representation>
+                <units>N/A</units>
+                <resolution>N/A</resolution>
+                <accuracy>perfect</accuracy>
+                <semantics>-NULL-</semantics>
+            </simpleData>
+        </simpleDataTypes>
+        <enumeratedDataTypes>
+            <enumeratedData>
+                <name>TSALevelEnum8</name>
+                <representation>HLAinteger16BE</representation>
+                <semantics></semantics>
+                <enumerator>
+                    <name>LowFidelityLevel1</name>
+                    <value>1</value>
+                </enumerator>
+                <enumerator>
+                    <name>LowFidelityLevel0</name>
+                    <value>0</value>
+                </enumerator>
+                <enumerator>
+                    <name>MediumFidelityLevel2</name>
+                    <value>2</value>
+                </enumerator>
+                <enumerator>
+                    <name>HighFidelityLevel4</name>
+                    <value>4</value>
+                </enumerator>
+                <enumerator>
+                    <name>MediumFidelityLevel3</name>
+                    <value>3</value>
+                </enumerator>
+            </enumeratedData>
+            <enumeratedData>
+                <name>JTIDSPrimaryModeEnum8</name>
+                <representation>HLAinteger16BE</representation>
+                <semantics></semantics>
+                <enumerator>
+                    <name>NTR</name>
+                    <value>1</value>
+                </enumerator>
+                <enumerator>
+                    <name>JTIDSUnitParticipant</name>
+                    <value>2</value>
+                </enumerator>
+            </enumeratedData>
+            <enumeratedData>
+                <name>JTIDSSecondaryModeEnum8</name>
+                <representation>HLAinteger16BE</representation>
+                <semantics></semantics>
+                <enumerator>
+                    <name>SecondaryNavigationController</name>
+                    <value>3</value>
+                </enumerator>
+                <enumerator>
+                    <name>PrimaryNavigationController</name>
+                    <value>2</value>
+                </enumerator>
+                <enumerator>
+                    <name>NetPositionReference</name>
+                    <value>1</value>
+                </enumerator>
+                <enumerator>
+                    <name>None</name>
+                    <value>0</value>
+                </enumerator>
+            </enumeratedData>
+            <enumeratedData>
+                <name>JTIDSSynchronizationStateEnum8</name>
+                <representation>HLAinteger16BE</representation>
+                <semantics></semantics>
+                <enumerator>
+                    <name>CourseSynchronization</name>
+                    <value>2</value>
+                </enumerator>
+                <enumerator>
+                    <name>FineSynchronization</name>
+                    <value>3</value>
+                </enumerator>
+            </enumeratedData>
+        </enumeratedDataTypes>
+        <arrayDataTypes>
+            <arrayData>
+                <name>TADILJWordStructArray</name>
+                <dataType>TADILJWordStruct</dataType>
+                <cardinality>Dynamic</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics></semantics>
+            </arrayData>
+            <arrayData>
+                <name>OctetArray1</name>
+                <dataType>HLAbyte</dataType>
+                <cardinality>6</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics></semantics>
+            </arrayData>
+            <arrayData>
+                <name>OctetArray2</name>
+                <dataType>HLAbyte</dataType>
+                <cardinality>10</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics></semantics>
+            </arrayData>
+        </arrayDataTypes>
+        <fixedRecordDataTypes>
+            <fixedRecordData>
+                <name>JTIDSHeaderStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics></semantics>
+                <field>
+                    <name>Data</name>
+                    <dataType>OctetArray1</dataType>
+                    <semantics></semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>RTTABStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics></semantics>
+                <field>
+                    <name>Data</name>
+                    <dataType>OctetArray1</dataType>
+                    <semantics></semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>RTTReplyStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics></semantics>
+                <field>
+                    <name>Data</name>
+                    <dataType>OctetArray1</dataType>
+                    <semantics></semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>LETHeaderStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics></semantics>
+                <field>
+                    <name>Data</name>
+                    <dataType>OctetArray1</dataType>
+                    <semantics></semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>TADILJWordStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics></semantics>
+                <field>
+                    <name>Data</name>
+                    <dataType>OctetArray2</dataType>
+                    <semantics></semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>JTIDSTransmitterStruct</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics></semantics>
+                <field>
+                    <name>TimeSlotAlocationMode</name>
+                    <dataType>TSALevelEnum8</dataType>
+                    <semantics></semantics>
+                </field>
+                <field>
+                    <name>TransmittingTerminalPrimaryMode</name>
+                    <dataType>JTIDSPrimaryModeEnum8</dataType>
+                    <semantics></semantics>
+                </field>
+                <field>
+                    <name>TransmittingTerminalSecondaryMode</name>
+                    <dataType>JTIDSSecondaryModeEnum8</dataType>
+                    <semantics></semantics>
+                </field>
+                <field>
+                    <name>SynchronizationState</name>
+                    <dataType>JTIDSSynchronizationStateEnum8</dataType>
+                    <semantics></semantics>
+                </field>
+                <field>
+                    <name>NetworkSynchronizationID</name>
+                    <dataType>UnsignedInteger32</dataType>
+                    <semantics></semantics>
+                </field>
+            </fixedRecordData>
+        </fixedRecordDataTypes>
+        <variantRecordDataTypes/>
+    </dataTypes>
+    <notes/>
+</objectModel>

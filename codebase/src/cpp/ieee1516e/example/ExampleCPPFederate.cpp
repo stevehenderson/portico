@@ -16,6 +16,8 @@
 #include "RTI/RTI1516.h"
 #include "RTI/time/HLAfloat64Interval.h"
 #include "RTI/time/HLAfloat64Time.h"
+#include "RTI/encoding/BasicDataElements.h"
+#include "RTI/encoding/HLAfixedArray.h"
 
 #include "ExampleFedAmb.h"
 #include "ExampleCPPFederate.h"
@@ -58,30 +60,7 @@ void ExampleCPPFederate::runFederate( std::wstring federateName )
 	///////////////////////////
 	// we need the federate ambassador set up before we can connect
 	this->fedamb = new ExampleFedAmb();
-	try
-	{
-		rtiamb->connect( *this->fedamb, HLA_EVOKED );
-	}
-	catch( ConnectionFailed& connectionFailed )
-	{
-		wcout << L"Connection failed: " << connectionFailed.what() << endl;
-	}
-	catch( InvalidLocalSettingsDesignator& settings )
-	{
-		wcout << L"Connection failed, InvalidLocalSettingsDesignator: " << settings.what() << endl;
-	}
-	catch( UnsupportedCallbackModel& callbackModel )
-	{
-		wcout << L"Connection failed, UnsupportedCallbackModel: " << callbackModel.what() << endl;
-	}
-	catch( AlreadyConnected& connected )
-	{
-		wcout << L"Connection failed, AlreadyConnected: " << connected.what() << endl;
-	}
-	catch( RTIinternalError& error )
-	{
-		wcout << L"Connection failed, Generic Error: " << error.what() << endl;
-	}
+	rtiamb->connect( *this->fedamb, HLA_EVOKED );
 	
 	//////////////////////////////////////////
 	// 3. create and join to the federation //
@@ -92,7 +71,7 @@ void ExampleCPPFederate::runFederate( std::wstring federateName )
 	try
 	{
 		vector<wstring> foms;
-		foms.push_back( L"testfom.fed" );
+		foms.push_back( L"L16.xml" );
 		
 		//rtiamb->createFederationExecution( L"ExampleFederation", L"testfom.fed" );
 		rtiamb->createFederationExecution( L"ExampleFederation", foms );
@@ -162,8 +141,8 @@ void ExampleCPPFederate::runFederate( std::wstring federateName )
 	/////////////////////////////////////
 	// 9. register an object to update //
 	/////////////////////////////////////
-	ObjectInstanceHandle objectHandle = registerObject();
-	wcout << L"Registered Object, handle=" << objectHandle << endl;
+//	ObjectInstanceHandle objectHandle = registerObject();
+//	wcout << L"Registered Object, handle=" << objectHandle << endl;
 
 	/////////////////////////////////////
 	// 10. do the main simulation loop //
@@ -175,7 +154,7 @@ void ExampleCPPFederate::runFederate( std::wstring federateName )
 	for( i = 0; i < 20; i++ )
 	{
 		// 9.1 update the attribute values of the instance //
-		updateAttributeValues( objectHandle );
+//		updateAttributeValues( objectHandle );
 
 		// 9.2 send an interaction
 		sendInteraction();
@@ -188,8 +167,8 @@ void ExampleCPPFederate::runFederate( std::wstring federateName )
 	//////////////////////////////////////
 	// 11. delete the object we created //
 	//////////////////////////////////////
-	deleteObject( objectHandle );
-	wcout << L"Deleted Object, handle=" << objectHandle << endl;
+//	deleteObject( objectHandle );
+//	wcout << L"Deleted Object, handle=" << objectHandle << endl;
 
 	////////////////////////////////////
 	// 12. resign from the federation //
@@ -236,14 +215,15 @@ void ExampleCPPFederate::runFederate( std::wstring federateName )
  */
 void ExampleCPPFederate::initializeHandles()
 {
-	this->aHandle  = rtiamb->getObjectClassHandle( L"ObjectRoot.A" );
-	this->aaHandle = rtiamb->getAttributeHandle( aHandle, L"aa" );
-	this->abHandle = rtiamb->getAttributeHandle( aHandle, L"ab" );
-	this->acHandle = rtiamb->getAttributeHandle( aHandle, L"ac" );
-
-	this->xHandle  = rtiamb->getInteractionClassHandle( L"InteractionRoot.X" );
-	this->xaHandle = rtiamb->getParameterHandle( xHandle, L"xa" );
-	this->xbHandle = rtiamb->getParameterHandle( xHandle, L"xb" );
+	this->vmfHandle       = rtiamb->getInteractionClassHandle( L"RadioSignal.RawBinaryRadioSignal.TDLBinaryRadioSignal.Link16RadioSignal.VMFRadioSignal" );
+	this->npgNumberHandle = rtiamb->getParameterHandle( vmfHandle, L"NPGNumber" );
+	this->netNumberHandle = rtiamb->getParameterHandle( vmfHandle, L"NetNumber" );
+	this->txTimeHandle    = rtiamb->getParameterHandle( vmfHandle, L"PerceivedTransmitTime" );
+	this->timeSlotHandle  = rtiamb->getParameterHandle( vmfHandle, L"TimeSlotID" );
+	this->tsecHandle      = rtiamb->getParameterHandle( vmfHandle, L"TSEC_CVLL" );
+	this->msecHandle      = rtiamb->getParameterHandle( vmfHandle, L"MSEC_CVLL" );
+	this->jtidsHandle     = rtiamb->getParameterHandle( vmfHandle, L"JTIDSHeader" );
+	this->tadilHandle     = rtiamb->getParameterHandle( vmfHandle, L"TADILJMessage" );
 }
 
 /*
@@ -262,6 +242,9 @@ void ExampleCPPFederate::waitForUser()
  */
 void ExampleCPPFederate::enableTimePolicy()
 {
+	// enable async
+	rtiamb->enableAsynchronousDelivery();
+
 	////////////////////////////
 	// enable time regulation //
 	////////////////////////////
@@ -294,29 +277,6 @@ void ExampleCPPFederate::enableTimePolicy()
  */
 void ExampleCPPFederate::publishAndSubscribe()
 {
-	////////////////////////////////////////////
-	// publish all attributes of ObjectRoot.A //
-	////////////////////////////////////////////
-	// before we can register instance of the object class ObjectRoot.A and
-	// update the values of the various attributes, we need to tell the RTI
-	// that we intend to publish this information
-
-	// package the information into a handle set
-	AttributeHandleSet attributes;// = AttributeHandleSet();
-	attributes.insert( this->aaHandle );
-	attributes.insert( this->abHandle );
-	attributes.insert( this->acHandle );
-
-	// do the actual publication
-	rtiamb->publishObjectClassAttributes( this->aHandle, attributes );
-
-	/////////////////////////////////////////////////
-	// subscribe to all attributes of ObjectRoot.A //
-	/////////////////////////////////////////////////
-	// we also want to hear about the same sort of information as it is
-	// created and altered in other federates, so we need to subscribe to it
-	rtiamb->subscribeObjectClassAttributes( this->aHandle, attributes );
-
 	/////////////////////////////////////////////////////
 	// publish the interaction class InteractionRoot.X //
 	/////////////////////////////////////////////////////
@@ -325,14 +285,14 @@ void ExampleCPPFederate::publishAndSubscribe()
 	// inform it of the parameters, only the class, making it much simpler
 
 	// do the publication
-	rtiamb->publishInteractionClass( this->xHandle );
+	rtiamb->publishInteractionClass( this->vmfHandle );
 
 	////////////////////////////////////////////////////
 	// subscribe to the InteractionRoot.X interaction //
 	////////////////////////////////////////////////////
 	// we also want to receive other interaction of the same type that are
 	// sent out by other federates, so we have to subscribe to it first
-	rtiamb->subscribeInteractionClass( this->xHandle );
+	rtiamb->subscribeInteractionClass( this->vmfHandle );
 }
 
 /*
@@ -404,26 +364,57 @@ void ExampleCPPFederate::sendInteraction()
 	ParameterHandleValueMap parameters;
 
 	// generate the new values
-	char xaValue[16], xbValue[16];
-	sprintf( xaValue, "xa:%f", getLbts() );
-	sprintf( xbValue, "xb:%f", getLbts() );
-	VariableLengthData xaData( (void*)xaValue, strlen(xaValue)+1 );
-	VariableLengthData xbData( (void*)xaValue, strlen(xbValue)+1 );
-	parameters[xaHandle] = xaData;
-	parameters[xbHandle] = xbData;
+	HLAinteger16BE npgNumber( 65000 );
+	HLAbyte        netNumber( 1 );
+	HLAinteger64BE timestamp( 123245678 );
+	HLAinteger32BE timeslot( 100000 );
+	HLAbyte        tseccvll( 2 );
+	HLAbyte        mseccvll( 3 );
+
+	HLAbyte        jtids( (char)1 );
+	HLAfixedArray  jtidsHeader( jtids, (size_t)6 );
+	jtidsHeader.set( (size_t)0, jtids );
+	jtidsHeader.set( (size_t)1, jtids );
+	jtidsHeader.set( (size_t)2, jtids );
+	jtidsHeader.set( (size_t)3, jtids );
+	jtidsHeader.set( (size_t)4, jtids );
+	jtidsHeader.set( (size_t)5, jtids );
+
+	HLAbyte        tadil( (char)2) ;
+	HLAfixedArray  tadilMessage( tadil, (size_t)10 );
+	tadilMessage.set( (size_t)0, tadil );
+	tadilMessage.set( (size_t)1, tadil );
+	tadilMessage.set( (size_t)2, tadil );
+	tadilMessage.set( (size_t)3, tadil );
+	tadilMessage.set( (size_t)4, tadil );
+	tadilMessage.set( (size_t)5, tadil );
+	tadilMessage.set( (size_t)6, tadil );
+	tadilMessage.set( (size_t)7, tadil );
+	tadilMessage.set( (size_t)8, tadil );
+	tadilMessage.set( (size_t)9, tadil );
+
+
+	parameters[npgNumberHandle] = npgNumber.encode();
+	parameters[netNumberHandle] = netNumber.encode();
+	parameters[txTimeHandle]    = timestamp.encode();
+	parameters[timeSlotHandle]  = timeslot.encode();
+	parameters[tsecHandle]      = tseccvll.encode();
+	parameters[msecHandle]      = mseccvll.encode();
+	parameters[jtidsHandle]     = jtidsHeader.encode();
+	parameters[tadilHandle]     = tadilMessage.encode();
 
 	//////////////////////////
 	// send the interaction //
 	//////////////////////////
 	VariableLengthData tag( (void*)"Hi!", 4 );
-	rtiamb->sendInteraction( xHandle, parameters, tag );
+	rtiamb->sendInteraction( vmfHandle, parameters, tag );
 
 	// if you want to associate a particular timestamp with the
 	// interaction, you will have to supply it to the RTI. Here
 	// we send another interaction, this time with a timestamp:
 	auto_ptr<HLAfloat64Time> time( new HLAfloat64Time(fedamb->federateTime+
 	                                                  fedamb->federateLookahead) );
-	rtiamb->sendInteraction( xHandle, parameters, tag, *time );
+	rtiamb->sendInteraction( vmfHandle, parameters, tag, *time );
 }
 
 /*

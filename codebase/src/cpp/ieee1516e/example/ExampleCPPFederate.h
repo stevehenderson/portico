@@ -33,9 +33,16 @@ class ExampleCPPFederate
 		AttributeHandle        aaHandle;
 		AttributeHandle        abHandle;
 		AttributeHandle        acHandle;
-		InteractionClassHandle xHandle;
-		ParameterHandle        xaHandle;
-		ParameterHandle        xbHandle;
+		
+		InteractionClassHandle vmfHandle;
+		ParameterHandle        npgNumberHandle;
+		ParameterHandle        netNumberHandle;
+		ParameterHandle        txTimeHandle;
+		ParameterHandle        timeSlotHandle;
+		ParameterHandle        tsecHandle;
+		ParameterHandle        msecHandle;
+		ParameterHandle        jtidsHandle;
+		ParameterHandle        tadilHandle;
 
 		// public methods //
 		ExampleCPPFederate();
