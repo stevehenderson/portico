@@ -23,4 +23,5 @@ Major change log from the upstream version:
 
 ###Compile C++
 
-I'm trying to compile it with Visual Studio 2015..here goes!
+Grabbed VS2010 Express here: http://go.microsoft.com/?linkid=9709969
+
