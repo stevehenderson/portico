@@ -1,7 +1,10 @@
 # portico
-Portico is was forked from openvlc/portico
-
+Portico was forked from openvlc/portico (https://github.com/openlvc/portico)
 Please check out http://www.porticoproject.org/ for more information
+
+Major change log from the upstream version:
+
+- Changed codebase/propoerties to match my java install
 
 ##Building Portico (Windows 10)
 
