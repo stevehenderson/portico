@@ -23,5 +23,9 @@ Major change log from the upstream version:
 
 ###Compile C++
 
-Grabbed VS2010 Express here: http://go.microsoft.com/?linkid=9709969
+- Grabbed VS2010 Express here: http://go.microsoft.com/?linkid=9709969
+- Installed it (note, I installed on top of Visual Studio 2015) Hopefully this won't break anything
+- Opened a command shell
+- Typed: "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\Tools\vsvars32.bat"  (note:quotes super important)
+- type: ant cpp.compile
 
