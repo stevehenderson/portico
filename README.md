@@ -5,6 +5,7 @@ Please check out http://www.porticoproject.org/ for more information
 Major change log from the upstream version:
 
 - Changed codebase/propoerties to match my java install
+- Removed references to `<verifyJdk location="${jdk.home.win32}" arch="x86"/>` from `hla13.xml` and `ieee1516e.xml` at `codebase\profiles\windows`
 
 ##Building Portico (Windows 10)
 
