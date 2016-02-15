@@ -3,7 +3,7 @@ Portico is was forked from openvlc/portico
 
 Please check out http://www.porticoproject.org/ for more information
 
-##Building Portico (Windoes 10)
+##Building Portico (Windows 10)
 
 ###Check out the Java settings
 - Edit:  codebase/build.properties
@@ -17,3 +17,6 @@ Please check out http://www.porticoproject.org/ for more information
 - Using same command shell from above
 - Type: `ant java.test`
 
+###Compile C++
+
+I'm trying to compile it with Visual Studio 2015..here goes!
