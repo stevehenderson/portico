@@ -4,11 +4,6 @@ Please check out http://www.porticoproject.org/ for more information
 
 **Thank you portico for sharing this wonderful project!!!**
 
-Major change log from the upstream version:
-
-- Changed codebase/propoerties to match my java install
-- Commentedd out   `<verifyJdk location="${jdk.home.win32}" arch="x86"/>` from `hla13.xml` and `ieee1516e.xml` at `codebase\profiles\windows`  This line is needed to compile on x32, and I don't need to.  Note:  I could have installed an x32 java environment and avoid this..
-
 ##Building Portico (Windows 10)
 
 The majority of portico is implemented in Java.  The CPP builds larelgy wrap the java code with JNI.  So I recommend building and testing java first.
@@ -31,12 +26,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.74-b02, mixed mode)
 
 ```
 
-
-
-
 ####Check out the Java settings
 - Edit:  codebase/build.properties
-- Set JDK appropriately
+- Set JDK appropriately.  This is mine:
 
 ```
 #################################
