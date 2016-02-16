@@ -17,13 +17,13 @@ The majority of portico is implemented in Java.  The CPP builds larelgy wrap the
 
 Java environment.  This is my setup for Java.  I've installed both x64 and x32 versions of the jre and jdk:
 
-`
+```
 C:\Program Files\java\jdk1.8.0_64
 C:\Program Files\java\jre1.8.0_64
 C:\Program Files (x86)\java\jdk1.8.0_64
 C:\Program Files (x86)\java\jre1.8.0_64
 JAVA_HOME=C:\Program Files\Java\jdk1.8.0_74
-`
+```
 
 
 
