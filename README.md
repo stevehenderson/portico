@@ -4,7 +4,7 @@ Please check out http://www.porticoproject.org/ for more information
 
 **Thank you portico for sharing this wonderful project!!!**
 
-##Building Portico (Windows 10)
+##Building Portico on Windows 10
 
 I recommend building and testing java first.
 
