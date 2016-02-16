@@ -2,7 +2,7 @@
 Portico was forked from openvlc/portico (https://github.com/openlvc/portico)
 Please check out http://www.porticoproject.org/ for more information
 
-**Thank you portico for sharing this wonderful project!!!**
+**Thank you @openlvc for sharing this wonderful project!!!**
 
 ##Building Portico on Windows 10
 
