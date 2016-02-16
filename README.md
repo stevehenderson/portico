@@ -2,6 +2,8 @@
 Portico was forked from openvlc/portico (https://github.com/openlvc/portico)
 Please check out http://www.porticoproject.org/ for more information
 
+**Thank you portico for sharing this wonderful project!!!**
+
 Major change log from the upstream version:
 
 - Changed codebase/propoerties to match my java install
