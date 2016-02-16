@@ -58,9 +58,15 @@ jdk.home.win64   = c:/Program Files/Java/jdk1.8.0_74
 - Opened a command shell
 - Typed: "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\Tools\vsvars32.bat"  (note:quotes super important)
 - Copied `jni_md.h` in `JAVA_HOME\include\Win32` to `JAVA_HOME\include`
-- Commented out these lines in `codebase\profiles\windows\hla13.xml`
+- Commented out Lines 87-88  in `codebase\profiles\windows\hla13.xml`
 ```
-	<compile-hla13 compiler="vc10" arch="amd64" build="debug"/> 
-	<compile-hla13 compiler="vc10" arch="amd64" build="release"/>```
+	<!-- <compile-hla13 compiler="vc10" arch="amd64" build="debug"/> -->
+	<!-- <compile-hla13 compiler="vc10" arch="amd64" build="release"/> -->
+```
+- Commented out Lines 81-82 lines in `codebase\profiles\windows\ieee1516e.xml`
+```
+	<!-- <compile-ieee1516e compiler="vc10" arch="amd64" build="debug"/> -->
+	<!-- <compile-ieee1516e compiler="vc10" arch="amd64" build="release"/> -->
+```
 - type: ant cpp.compile
 
