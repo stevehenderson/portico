@@ -38,6 +38,19 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.74-b02, mixed mode)
 - Edit:  codebase/build.properties
 - Set JDK appropriately
 
+```
+#################################
+# Java Development Kit Settings #
+#################################
+# Windows values need either "/" or "\\\" for path separation. Back-slash is
+# escaped when the properties file is read, and then again by Ant.
+jdk.home.macosx  = /Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home
+jdk.home.linux32 = /usr/lib/jvm/java-8-oracle
+jdk.home.linux64 = /usr/lib/jvm/java-8-oracle
+jdk.home.win32   = c:/Program Files (x86)/Java/jdk1.8.0_74
+jdk.home.win64   = c:/Program Files/Java/jdk1.8.0_74
+```
+
 ####Compile java library
 - open a shell in codebase
 - Type: `ant java.compile`
