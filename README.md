@@ -57,7 +57,7 @@ jdk.home.win64   = c:/Program Files/Java/jdk1.8.0_74
 - Installed it (note, I installed on top of Visual Studio 2015) Hopefully this won't break anything
 - Opened a command shell
 - Typed: "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\Tools\vsvars32.bat"  (note:quotes super important)
-- Copied `jni_md.h` in `JAVA_HOME\include\Win32` to `JAVA_HOME\include`
+- ~~Copied `jni_md.h` in `JAVA_HOME\include\Win32` to `JAVA_HOME\include`~~
 - Commented out Lines 87-88  in `codebase\profiles\windows\hla13.xml`
 ```
 	<!-- <compile-hla13 compiler="vc10" arch="amd64" build="debug"/> -->
