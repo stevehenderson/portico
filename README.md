@@ -51,6 +51,11 @@ jdk.home.win64   = c:/Program Files/Java/jdk1.8.0_74
 - Using same command shell from above
 - Type: `ant java.test`
 
+
+####Where's the library?
+
+`codebase\dist\portico-2.1.0\lib\portico.jar`
+
 ###Building Compile C++
 
 - Grabbed VS2010 Express here: http://go.microsoft.com/?linkid=9709969
