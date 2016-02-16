@@ -6,7 +6,7 @@ Please check out http://www.porticoproject.org/ for more information
 
 ##Building Portico (Windows 10)
 
-The majority of portico is implemented in Java.  The CPP builds larelgy wrap the java code with JNI.  So I recommend building and testing java first.
+I recommend building and testing java first.
 
 ###Building Java
 
@@ -57,8 +57,9 @@ jdk.home.win64   = c:/Program Files/Java/jdk1.8.0_74
 - Installed it (note, I installed on top of Visual Studio 2015) Hopefully this won't break anything
 - Opened a command shell
 - Typed: "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\Tools\vsvars32.bat"  (note:quotes super important)
-- Edited: codebase\cpp\hla13\src\common.h
-          Changed L139 to: `#include "C:\Program Files\Java\jdk1.8.0_74\include\jni.h"`
 - Copied `jni_md.h` in `JAVA_HOME\include\Win32` to `JAVA_HOME\include`
+- Commented out these lines in `codebase\profiles\windows\hla13.xml`
+```		<!-- <compile-hla13 compiler="vc10" arch="amd64" build="debug"/> 
+		<!-- <compile-hla13 compiler="vc10" arch="amd64" build="release"/>```
 - type: ant cpp.compile
 
