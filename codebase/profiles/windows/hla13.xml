@@ -72,6 +72,8 @@
 	                 extensionOf="cpp.compile"
 					 description="Compile the full HLA v1.3 interface"/>
 	
+	
+
 	<!-- ================================================================= -->
 	<!--             Visual Studio 2010 (vc10) Compile Targets             -->
 	<!-- ================================================================= -->
@@ -82,8 +84,8 @@
 	<target name="compile.vc10" extensionOf="compile">
 		<compile-hla13 compiler="vc10" arch="x86" build="debug"/>
 		<compile-hla13 compiler="vc10" arch="x86" build="release"/>
-		<compile-hla13 compiler="vc10" arch="amd64" build="debug"/>
-		<compile-hla13 compiler="vc10" arch="amd64" build="release"/>
+		<!-- <compile-hla13 compiler="vc10" arch="amd64" build="debug"/> -->
+		<!-- <compile-hla13 compiler="vc10" arch="amd64" build="release"/> -->
 	</target>
 
 	<!-- ================================================================= -->
@@ -427,3 +429,4 @@
 	</macrodef>
 
 </project>
+

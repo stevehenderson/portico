@@ -21,8 +21,9 @@
 
 	<!-- ==== Basic Properties ==== -->
 	<!-- Verify that we have an appropriate JDK to build against -->
-	<verifyJdk location="${jdk.home.win32}" arch="x86"/>
-	<verifyJdk location="${jdk.home.win64}" arch="amd64"/>
+	<!--<verifyJdk location="${jdk.home.win32}" arch="x86"/> -->
+	<verifyJdk location="${jdk.home.win64}" arch="amd64"/> 
+	<!--<verifyJdk location="${env.JAVA_HOME}" arch="amd64"/> -->
 
 	<!-- ================================================ -->
 	<!-- ==== IEEE-1516e (2010) Interface Properties ==== -->
@@ -77,8 +78,8 @@
 	<target name="compile.vc10" extensionOf="compile">
 		<compile-ieee1516e compiler="vc10" arch="x86" build="debug"/>
 		<compile-ieee1516e compiler="vc10" arch="x86" build="release"/>
-		<compile-ieee1516e compiler="vc10" arch="amd64" build="debug"/>
-		<compile-ieee1516e compiler="vc10" arch="amd64" build="release"/>
+		<!-- <compile-ieee1516e compiler="vc10" arch="amd64" build="debug"/> -->
+		<!-- <compile-ieee1516e compiler="vc10" arch="amd64" build="release"/> -->
 	</target>
 
 	<!-- ================================================================= -->

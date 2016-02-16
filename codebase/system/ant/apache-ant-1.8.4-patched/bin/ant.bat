@@ -120,6 +120,7 @@ if "%_JAVACMD%" == "" set _JAVACMD=%JAVA_HOME%\bin\java.exe
 goto checkJikes
 
 :noJavaHome
+echo "No Java Home!!"
 if "%_JAVACMD%" == "" set _JAVACMD=java.exe
 
 :checkJikes

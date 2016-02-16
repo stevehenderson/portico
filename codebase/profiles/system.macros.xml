@@ -220,8 +220,13 @@
 			<local name="_jdkpath"/>
 			<if><equals arg1="@{jredir}" arg2=""/><then>
 				<echo>No JRE specified -- falling back to platform default for ${platform}</echo>
-				<if>    <isset property="platform.win32"/>  <then><property name="_jdkpath" value="${jdk.home.win32}"/></then>
+				<if>    <isset property="platform.win32"/>  <then><property name="_jdkpath" value="${env.JAVA_HOME}"/></then>
+				
+				
+
 				<elseif><isset property="platform.win64"/>  <then><property name="_jdkpath" value="${jdk.home.win64}"/></then></elseif>
+				
+
 				<elseif><isset property="platform.linux32"/><then><property name="_jdkpath" value="${jdk.home.linux32}"/></then></elseif>
 				<elseif><isset property="platform.linux64"/><then><property name="_jdkpath" value="${jdk.home.linux64}"/></then></elseif>
 				<elseif><isset property="platform.macosx"/> <then><property name="_jdkpath" value="${jdk.home.macosx}"/></then></elseif>
