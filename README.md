@@ -70,3 +70,10 @@ jdk.home.win64   = c:/Program Files/Java/jdk1.8.0_74
 ```
 - type: ant cpp.compile
 
+-If it all goes well, you should see some dll's (`libfedtim, etc`) here:
+
+```
+codebase\build\cpp\win32\hla13\complete\vc10
+codebase\build\cpp\win32\ieee1516e\complete\vc10
+```
+
