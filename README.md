@@ -87,15 +87,17 @@ codebase\build\cpp\win32\ieee1516e\complete\vc10
 I had one issue when running the IEEE1516e example.  It kept throwing an error about attributes not being found.  The issue is the restrauantprocess.fom was missing a required attribute.  So I added the following to `codebase/dist/portico-2.1.0/examples/java/ieee1516e/foms/RestrauntProcesses.xml` (After Line 54).
 
 ```
-	<attribute>
-                <name>HLAprivilegeToDeleteObject</name>
-                <dataType>HLAtoken</dataType>
-                <updateType>Static</updateType>
-                <updateCondition>NA</updateCondition>
-                <ownership>DivestAcquire</ownership>
-                <sharing>PublishSubscribe</sharing>
-                <transportation>HLAreliable</transportation>
-                <order>TimeStamp</order>
-                <semantics>NA</semantics>
-        </attribute>
+<attribute>
+        <name>HLAprivilegeToDeleteObject</name>
+        <dataType>HLAtoken</dataType>
+        <updateType>Static</updateType>
+        <updateCondition>NA</updateCondition>
+        <ownership>DivestAcquire</ownership>
+        <sharing>PublishSubscribe</sharing>
+        <transportation>HLAreliable</transportation>
+        <order>TimeStamp</order>
+        <semantics>NA</semantics>
+</attribute>        
 ```
+
+I added the same attribute to the RestrauntProcesses.xml file at `codebase/src/java/ieee1516e/examples/java/ieee1516e/foms/RestrauntProcesses.xml`
