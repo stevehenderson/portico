@@ -9,19 +9,23 @@ Major change log from the upstream version:
 
 ##Building Portico (Windows 10)
 
-###Check out the Java settings
+The majority of portico is implemented in Java.  The CPP builds larelgy wrap the java code with JNI.  So I recommend building and testing java first.
+
+###Building Java
+
+####Check out the Java settings
 - Edit:  codebase/build.properties
 - Set JDK appropriately
 
-###Compile java library
+####Compile java library
 - open a shell in codebase
 - Type: `ant java.compile`
 
-###Test Java library
+####Test Java library
 - Using same command shell from above
 - Type: `ant java.test`
 
-###Compile C++
+###Building Compile C++
 
 - Grabbed VS2010 Express here: http://go.microsoft.com/?linkid=9709969
 - Installed it (note, I installed on top of Visual Studio 2015) Hopefully this won't break anything
