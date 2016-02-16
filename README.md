@@ -23,6 +23,12 @@ C:\Program Files\java\jre1.8.0_64
 C:\Program Files (x86)\java\jdk1.8.0_64
 C:\Program Files (x86)\java\jre1.8.0_64
 JAVA_HOME=C:\Program Files\Java\jdk1.8.0_74
+
+c:\dev\portico\codebase>java -version
+java version "1.8.0_74"
+Java(TM) SE Runtime Environment (build 1.8.0_74-b02)
+Java HotSpot(TM) 64-Bit Server VM (build 25.74-b02, mixed mode)
+
 ```
 
 
